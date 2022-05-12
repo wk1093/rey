@@ -1,0 +1,16 @@
+std::string colorVertexShader = "#version 330 core\n"
+"layout (location = 0) in vec3 aPos;\n"
+"layout (location = 1) in vec4 aColor;\n"
+"out vec4 ourColor;\n"
+"uniform vec2 viewport;\n"
+"void main()\n"
+"{\n"
+"   gl_Position = vec4((aPos.x - viewport.x) / viewport.x, (aPos.y + viewport.y) / viewport.y, aPos.z, 1.0);\n"
+"	ourColor = aColor;\n"
+"}\0";
+std::string colorFragmentShader = "#version 330 core\n"
+"in vec4 ourColor;\n"
+"void main()\n"
+"{\n"
+"   gl_FragColor = ourColor;\n"
+"}\n\0";
