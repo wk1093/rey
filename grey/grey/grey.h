@@ -11,11 +11,6 @@
 #include <Windows.h>
 #endif
 
-/*
-TO DO:
-Rework draw gradient to use 4 points
-*/
-
 bool initGraphics() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

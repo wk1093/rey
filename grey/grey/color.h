@@ -24,3 +24,4 @@ Color COLOR_ROSE = { 255, 0, 128, 255 };
 
 // Miscellaneous
 Color COLOR_DISCORD = { 54, 57, 63, 255 };
+Color COLOR_SIMPLE = { 0, 159, 141, 255 };
