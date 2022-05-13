@@ -36,4 +36,5 @@ public:
 	void setFloat(const char* name, float value) const { glUniform1f(glGetUniformLocation(shaderProgram, name), value); }
 	void setFloat4(const char* name, float value[4]) const { glUniform4f(glGetUniformLocation(shaderProgram, name), value[0], value[1], value[2], value[3]); }
 	void setVec2(const char* name, float x, float y) const { glUniform2f(glGetUniformLocation(shaderProgram, name), x, y); }
+	void setVec3(const char* name, float x, float y, float z) const { glUniform3f(glGetUniformLocation(shaderProgram, name), x, y, z); }
 };

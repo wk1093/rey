@@ -34,7 +34,6 @@ public:
 			first.push_back(tempInt);
 			tempInt += shapeVerticies[i];
 		}
-		glBindVertexArray(VAO);
 		glMultiDrawArrays(type, first.data(), count.data(), shapeVerticies.size());
 		shapeVerticies = {};
 	}

@@ -1,10 +1,9 @@
 #include "Key.h"
-#include "color.h"
 #include "Window_Flags.h"
 #include "Shader.h"
 #include "shaders.h"
-#include "texture.h"
 #include "VAO.h"
+#include "c.a.m.e.r.a.h"
 int WIDTH, HEIGHT;
 
 // Generally used functions
@@ -21,19 +20,27 @@ private:
 	GLFWwindow* windowHandle = 0;
 	VAO triangleVAO;
 	VAO triangleFanVAO;
+	std::vector<Texture> textures;
 	Shader* colorShader = 0;
+	Shader* textureShader = 0;
 	Color backgroundColor = { 0, 0, 0, 255 };
 	bool shouldClearBackground = false;
-	float deltaTime, lastFrame = 0.0f;
+	float deltaTime = 0.0f; float lastFrame = 0.0f;
 	float currentFrame;
 	float zmod = 0.0f;
+	Key keys;
 public:
 	bool isOpen, debugInfo = false;
 	int width = WIDTH; int height = HEIGHT;
 	int x = 0; int y = 0;
 	double mouseX = 0; double mouseY = 0;
 	const char* title;
+	Camera camera;
 
+	TextureID newTexture(std::string filePath) {
+		textures.push_back(Texture(filePath));
+		return textures.size() - 1;
+	}
 	void drawRect(float x1, float y1, float width, float height, Color color) {
 		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
 		float x = x1;
@@ -45,6 +52,19 @@ public:
 		triangleFanVAO.addTriangle(passIn1);
 		triangleFanVAO.addVertice(passIn2);
 		triangleFanVAO.endShape();
+		zmod -= 0.000001f;
+	}
+	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color) {
+		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
+		float x = x1;
+		float y = y1;
+		y += height;
+		y -= y * 2;
+		float passIn1[27] = { x, y, zmod, cR,cG,cB,cA, 0.0f, 1.0f, x, y + height, zmod, cR,cG,cB,cA, 0.0f, 0.0f, x + width, y + height, zmod, cR,cG,cB,cA, 1.0f, 0.0f };
+		float passIn2[9] = { x + width, y, zmod, cR,cG,cB,cA, 1.0f, 1.0f };
+		textures[texture].addTriangle(passIn1);
+		textures[texture].addVertice(passIn2);
+		textures[texture].endShape();
 		zmod -= 0.000001f;
 	}
 	void drawCircle(float x, float y, float r, Color color) {
@@ -103,6 +123,7 @@ public:
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) { std::cout << "Graphics init failure! (glad)\n"; }
 		isOpen = true;
 		colorShader = new Shader(colorVertexShader.c_str(), colorFragmentShader.c_str());
+		textureShader = new Shader(textureVertexShader.c_str(), textureFragmentShader.c_str());
 		triangleVAO.initVAO();
 		triangleFanVAO.initVAO();
 		glEnable(GL_DEPTH_TEST);
@@ -114,9 +135,14 @@ public:
 		isOpen = false;
 		glfwSetWindowShouldClose(windowHandle, true);
 		delete colorShader;
+		delete textureShader;
 	}
+
 	bool isKeyPressed(int key) {
-		return (glfwGetKey(windowHandle, key) == GLFW_PRESS);
+		return keys.FindTempKey(key);
+	}
+	bool isKeyDown(int key) {
+		return keys.FindKey(key);
 	}
 
 	bool isMousePressed(int button) {
@@ -134,34 +160,57 @@ public:
 		}
 	}
 	void update() {
+		currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		currentFrame = glfwGetTime();
 		isOpen = !glfwWindowShouldClose(windowHandle);
 		width = WIDTH; height = HEIGHT;
 		glfwGetWindowPos(windowHandle, &x, &y);
 		glfwGetCursorPos(windowHandle, &mouseX, &mouseY);
 		glfwPollEvents();
+		keys.UpdateKeys(windowHandle);
 	}
 	void render() {
 		glClearColor(float(backgroundColor[0]) / 255, float(backgroundColor[1]) / 255, float(backgroundColor[2]) / 255, float(backgroundColor[3]) / 255);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		triangleVAO.setUpVAO();
 		triangleFanVAO.setUpVAO();
+		for (int i = 0; i < textures.size(); i++) {
+			textures[i].setUpVAO();
+		}
 
 		colorShader->use();
 		colorShader->setVec2("viewport", WIDTH/2, HEIGHT/2);
+		colorShader->setVec3("offset", camera.x, camera.y, camera.z);
 
 		// Draw triangles 
 		glBindVertexArray(triangleVAO.VAO);
 		glDrawArrays(GL_TRIANGLES, 0, triangleVAO.verticeCount);
 		
 		// Draw triangle fans
+		glBindVertexArray(triangleFanVAO.VAO);
 		triangleFanVAO.draw(GL_TRIANGLE_FAN);
+
+		if (textures.size() > 0) {
+			textureShader->use();
+			textureShader->setVec2("viewport", WIDTH / 2, HEIGHT / 2);
+			textureShader->setVec3("offset", camera.x, camera.y, camera.z);
+		}
+
+		// Draw textures
+		for (int i = 0; i < textures.size(); i++) {
+			glBindTexture(GL_TEXTURE_2D, textures[i].texture);
+			glBindVertexArray(textures[i].VAO);
+			textures[i].draw(GL_TRIANGLE_FAN);
+		}
 
 		if (debugInfo) {
 			float afterRenderTime = glfwGetTime() - currentFrame;
-			std::cout << "\nVertice count: " << triangleVAO.verticeCount + triangleFanVAO.verticeCount;
+			int debugVerticeCount = triangleVAO.verticeCount + triangleFanVAO.verticeCount;
+			for (int i = 0; i < textures.size(); i++) {
+				debugVerticeCount += textures[i].verticeCount;
+			}
+			std::cout << "\nVertice count: " << debugVerticeCount;
 			std::cout << "\nTotal time spent rendering: " << afterRenderTime*1000 << " milliseconds";
 			std::cout << "\nFPS: " << 1 / afterRenderTime;
 			std::cout << "\nTotal application time: " << glfwGetTime() << " seconds";
@@ -170,6 +219,9 @@ public:
 
 		triangleVAO.flushVAO();
 		triangleFanVAO.flushVAO();
+		for (int i = 0; i < textures.size(); i++) {
+			textures[i].flushVAO();
+		}
 		glfwSwapBuffers(windowHandle);
 
 		zmod = 0.0f;

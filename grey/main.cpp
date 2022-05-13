@@ -1,17 +1,20 @@
 #include "grey.h"
 
-int main() {
+int main()
+{
 	initGraphics();
-	Window win(200, 400, "TestApp");
+
+	Window win(1280, 720, "grey");
 	win.open();
 	win.setBackgroundColor(COLOR_WHITE);
 
-	while (win.isOpen) {
+	while (win.isOpen)
+	{
 		win.update();
 
 		win.render();
 	}
 
 	win.close();
-	close();
+	closeGraphics();
 }

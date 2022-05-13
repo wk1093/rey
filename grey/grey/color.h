@@ -22,5 +22,5 @@ Color COLOR_AZURE = { 0, 128, 255, 255 };
 Color COLOR_VIOLET = { 128, 0, 255, 255 };
 Color COLOR_ROSE = { 255, 0, 128, 255 };
 
-// Custom
+// Miscellaneous
 Color COLOR_DISCORD = { 54, 57, 63, 255 };

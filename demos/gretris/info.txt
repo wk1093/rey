@@ -1,0 +1,1 @@
+This is a demo for a game where blocks fall and you have to stack them. WASD or arrow keys to move, and the stats are in the title of the window. The code used for this exe can be found in main.cpp.

@@ -35,12 +35,6 @@
     <ClInclude Include="grey\shaders.h">
       <Filter>Resource Files\grey</Filter>
     </ClInclude>
-    <ClInclude Include="grey\Shapes.h">
-      <Filter>Resource Files\grey</Filter>
-    </ClInclude>
-    <ClInclude Include="grey\texture.h">
-      <Filter>Resource Files\grey</Filter>
-    </ClInclude>
     <ClInclude Include="grey\VAO.h">
       <Filter>Resource Files\grey</Filter>
     </ClInclude>
@@ -54,6 +48,18 @@
       <Filter>Resource Files\grey</Filter>
     </ClInclude>
     <ClInclude Include="grey\grey.h">
+      <Filter>Resource Files\grey</Filter>
+    </ClInclude>
+    <ClInclude Include="grey\c.a.m.e.r.a.h">
+      <Filter>Resource Files\grey</Filter>
+    </ClInclude>
+    <ClInclude Include="grey\TexTurEoBjeCt.h.h">
+      <Filter>Resource Files\grey</Filter>
+    </ClInclude>
+    <ClInclude Include="grey\stb_image.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="grey\T_1_M_3_R.h">
       <Filter>Resource Files\grey</Filter>
     </ClInclude>
   </ItemGroup>

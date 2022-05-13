@@ -3,6 +3,9 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
+#include "T_1_M_3_R.h"
+#include "color.h"
+#include "TexTurEoBjeCt.h.h"
 #include "Window.h"
 #ifdef _WIN32
 #include <Windows.h>
@@ -11,7 +14,6 @@
 /*
 TO DO:
 Rework draw gradient to use 4 points
-Rework dimensions and stuff like that to not use pointers (public vars)
 */
 
 bool initGraphics() {
@@ -33,6 +35,6 @@ bool initGraphics() {
 	return true;
 }
 
-void close() {
+void closeGraphics() {
 	glfwTerminate();
 }

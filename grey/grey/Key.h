@@ -131,3 +131,69 @@
 
 #define MOUSE_LEFT			   GLFW_MOUSE_BUTTON_LEFT
 #define MOUSE_RIGHT			   GLFW_MOUSE_BUTTON_RIGHT
+
+class Key {
+public:
+	std::vector<int> Keys;
+	std::vector<int> TempKeys;
+
+	void AddKey(int key) {
+		int found = -1;
+		for (int i = 0; i < Keys.size(); i++) {
+			if (Keys[i] == key) {
+				found = i;
+			}
+		}
+		if (found != -1) {
+			for (int i = 0; i < TempKeys.size(); i++) {
+				if (Keys[found] == TempKeys[i]) {
+					TempKeys.erase(TempKeys.begin() + i);
+					return;
+				}
+			}
+		} else {
+			Keys.push_back(key);
+			TempKeys.push_back(key);
+		}
+	}
+	void RemoveKey(int key) {
+		for (int i = 0; i < Keys.size(); i++) {
+			if (Keys[i] == key) {
+				Keys.erase(Keys.begin() + i);
+				for (int z = 0; z < TempKeys.size(); z++) {
+					if (TempKeys[z] == key) {
+						TempKeys.erase(TempKeys.begin() + z);
+						return;
+					}
+				}
+				return;
+			}
+		}
+	}
+	void UpdateKeys(GLFWwindow* window) {
+		for (int i = 32; i < 349; i++) {
+			if (glfwGetKey(window, i) == GLFW_PRESS) {
+				AddKey(i);
+			}
+			else {
+				RemoveKey(i);
+			}
+		}
+	}
+	bool FindKey(int key) {
+		for (int i = 0; i < Keys.size(); i++) {
+			if (Keys[i] == key) {
+				return true;
+			}
+		}
+		return false;
+	}
+	bool FindTempKey(int key) {
+		for (int i = 0; i < TempKeys.size(); i++) {
+			if (TempKeys[i] == key) {
+				return true;
+			}
+		}
+		return false;
+	}
+};
