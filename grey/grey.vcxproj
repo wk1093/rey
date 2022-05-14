@@ -255,6 +255,7 @@
     <ClInclude Include="grey\VAO.h" />
     <ClInclude Include="grey\Window.h" />
     <ClInclude Include="grey\Window_Flags.h" />
+    <ClInclude Include="prey\prey.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
