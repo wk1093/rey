@@ -11,6 +11,9 @@
 #include <Windows.h>
 #endif
 
+// TODO
+// Optimize rotation in drawRect and drawTexture (if rot is 0 dont calculate it)
+
 bool initGraphics() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

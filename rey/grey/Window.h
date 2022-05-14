@@ -42,26 +42,70 @@ public:
 		return textures.size() - 1;
 	}
 	void drawRect(float x1, float y1, float width, float height, Color color) {
+		drawRect(x1, y1, width, height, color, 0);
+	}
+
+	void drawRect(float x1, float y1, float width, float height, Color color, float r) {
 		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
 		float x = x1;
 		float y = y1;
 		y += height;
 		y -= y * 2;
-		float passIn1[21] = { x, y, zmod, cR,cG,cB,cA, x, y + height, zmod, cR,cG,cB,cA,x + width, y + height, zmod, cR,cG,cB,cA };
-		float passIn2[7] = { x + width, y, zmod, cR,cG,cB,cA };
+
+		float pi = 3.1415926535897932384626433;
+
+		float rotation = r * (pi / 180);
+
+		float a1 = sqrt(pow((width / 2), 2) + pow((height / 2), 2));
+
+		float r0 = asin(((height / 2) * (sin(pi / 2))) / (a1));
+		float r1 = r0 + rotation;
+		float r2 = -r0 + rotation;
+		float r3 = r1 - pi;
+		float r4 = r2 - pi;
+
+		float c1 = x + width / 2;
+		float c2 = y + height / 2;
+
+
+		float passIn1[21] = { a1*cos(r1)+c1, a1*sin(r1)+c2, zmod, cR,cG,cB,cA,  a1 * cos(r2) + c1, a1 * sin(r2) + c2, zmod, cR,cG,cB,cA, a1 * cos(r3) + c1, a1 * sin(r3) + c2, zmod, cR,cG,cB,cA };
+		float passIn2[7] = { a1 * cos(r4) + c1, a1 * sin(r4) + c2, zmod, cR,cG,cB,cA };
 		triangleFanVAO.addTriangle(passIn1);
 		triangleFanVAO.addVertice(passIn2);
 		triangleFanVAO.endShape();
 		zmod -= 0.000001f;
 	}
+	void drawTexture(TextureID texture, float x1, float y1, float width, float height) {
+		drawTexture(texture, x1, y1, width, height, COLOR_WHITE);
+	}
 	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color) {
+		drawTexture(texture, x1, y1, width, height, color, 0);
+	}
+
+	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color, float r) {
 		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
 		float x = x1;
 		float y = y1;
 		y += height;
 		y -= y * 2;
-		float passIn1[27] = { x, y, zmod, cR,cG,cB,cA, 0.0f, 1.0f, x, y + height, zmod, cR,cG,cB,cA, 0.0f, 0.0f, x + width, y + height, zmod, cR,cG,cB,cA, 1.0f, 0.0f };
-		float passIn2[9] = { x + width, y, zmod, cR,cG,cB,cA, 1.0f, 1.0f };
+		float pi = 3.1415926535897932384626433;
+
+		float rotation = r * (pi / 180);
+
+		float a1 = sqrt(pow((width / 2), 2) + pow((height / 2), 2));
+
+		float r0 = asin(((height / 2) * (sin(pi / 2))) / (a1));
+		float r1 = r0 + rotation;
+		float r2 = -r0 + rotation;
+		float r3 = r1 - pi;
+		float r4 = r2 - pi;
+
+		float c1 = x + width / 2;
+		float c2 = y + height / 2;
+
+
+		float passIn1[27] = { a1 * cos(r1) + c1, a1 * sin(r1) + c2, zmod, cR,cG,cB,cA, 0.0f, 1.0f, a1 * cos(r2) + c1, a1 * sin(r2) + c2, zmod, cR,cG,cB,cA, 0.0f, 0.0f, a1 * cos(r3) + c1, a1 * sin(r3) + c2, zmod, cR,cG,cB,cA, 1.0f, 0.0f };
+		float passIn2[9] = { a1 * cos(r4) + c1, a1 * sin(r4) + c2, zmod, cR,cG,cB,cA, 1.0f, 1.0f };
 		textures[texture].addTriangle(passIn1);
 		textures[texture].addVertice(passIn2);
 		textures[texture].endShape();
