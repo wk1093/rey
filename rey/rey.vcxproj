@@ -251,6 +251,7 @@
     <ClInclude Include="grey\shaders.h" />
     <ClInclude Include="grey\stb_image.h" />
     <ClInclude Include="grey\TexTurEoBjeCt.h.h" />
+    <ClInclude Include="grey\texture_parametersssss.h" />
     <ClInclude Include="grey\T_1_M_3_R.h" />
     <ClInclude Include="grey\VAO.h" />
     <ClInclude Include="grey\Window.h" />

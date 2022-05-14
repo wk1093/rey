@@ -1,5 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "texture_parametersssss.h"
 typedef unsigned int TextureID;
 
 class Texture {
@@ -11,7 +12,7 @@ public:
 	std::vector<int> shapeVerticies;
 	int stack = 0;
 
-	Texture(std::string filePath) {
+	Texture(std::string filePath, int filter=FILTER_LINEAR) {
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
 		glBindVertexArray(VAO);
@@ -35,8 +36,8 @@ public:
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST); // Make texture filtering customizable!
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 		int width, height, nrChannels;
 
 		unsigned char* data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 4);

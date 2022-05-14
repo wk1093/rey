@@ -14,11 +14,12 @@
 // TODO
 // Optimize rotation in drawRect and drawTexture (if rot is 0 dont calculate it)
 
-bool initGraphics() {
+bool initGraphics(unsigned int sampleRate=4) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, sampleRate);
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif

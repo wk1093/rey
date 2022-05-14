@@ -29,6 +29,7 @@ private:
 	float currentFrame;
 	float zmod = 0.0f;
 	Key keys;
+	float prevX = 0.0f, prevY = 0.0f, prevWidth = 0.0f, prevHeight = 0.0f;
 public:
 	bool isOpen, debugInfo = false;
 	int width = WIDTH; int height = HEIGHT;
@@ -36,9 +37,10 @@ public:
 	double mouseX = 0; double mouseY = 0;
 	const char* title;
 	Camera camera;
+	bool fullscreen = false;
 
-	TextureID newTexture(std::string filePath) {
-		textures.push_back(Texture(filePath));
+	TextureID newTexture(std::string filePath, int filter = FILTER_LINEAR) {
+		textures.push_back(Texture(filePath, filter));
 		return textures.size() - 1;
 	}
 
@@ -169,6 +171,7 @@ public:
 	void close() {
 		isOpen = false;
 		glfwSetWindowShouldClose(windowHandle, true);
+		glfwDestroyWindow(windowHandle);
 		delete colorShader;
 		delete textureShader;
 	}
@@ -272,4 +275,25 @@ public:
 	void setWindowDimensions(int _width, int _height) { glfwSetWindowSize(windowHandle, _width, _height); width = _width; height = _height; }
 	// Sets the title of the window
 	void setWindowTitle(std::string _title) { glfwSetWindowTitle(windowHandle, _title.c_str()); title = _title.c_str(); }
+
+	void setFullscreen(bool _fullscreen)
+	{
+		if (fullscreen == _fullscreen) { return; }
+		if (_fullscreen) {
+			prevX = x;
+			prevY = y;
+			prevWidth = width;
+			prevHeight = height;
+			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			glfwSetWindowMonitor(windowHandle, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
+			fullscreen = true;
+		}
+		else {
+			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			glfwSetWindowMonitor(windowHandle, NULL, 0, 0, mode->width, mode->height, mode->refreshRate);
+			setWindowDimensions(prevWidth, prevHeight);
+			setWindowPosition(prevX, prevY);
+			fullscreen = false;
+		}
+	}
 };

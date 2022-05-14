@@ -68,5 +68,8 @@
     <ClInclude Include="prey\prey.h">
       <Filter>Resource Files\prey</Filter>
     </ClInclude>
+    <ClInclude Include="grey\texture_parametersssss.h">
+      <Filter>Resource Files\grey</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
