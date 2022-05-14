@@ -41,11 +41,8 @@ public:
 		textures.push_back(Texture(filePath));
 		return textures.size() - 1;
 	}
-	void drawRect(float x1, float y1, float width, float height, Color color) {
-		drawRect(x1, y1, width, height, color, 0);
-	}
 
-	void drawRect(float x1, float y1, float width, float height, Color color, float r) {
+	void drawRect(float x1, float y1, float width, float height, Color color, float r=0) {
 		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
 		float x = x1;
 		float y = y1;
@@ -75,14 +72,8 @@ public:
 		triangleFanVAO.endShape();
 		zmod -= 0.000001f;
 	}
-	void drawTexture(TextureID texture, float x1, float y1, float width, float height) {
-		drawTexture(texture, x1, y1, width, height, COLOR_WHITE);
-	}
-	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color) {
-		drawTexture(texture, x1, y1, width, height, color, 0);
-	}
 
-	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color, float r) {
+	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color=COLOR_WHITE, float r=0) {
 		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
 		float x = x1;
 		float y = y1;
