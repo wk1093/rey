@@ -239,7 +239,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="grey\glad.c" />
+    <ClCompile Include="dependencies\glad.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -249,7 +249,6 @@
     <ClInclude Include="grey\Key.h" />
     <ClInclude Include="grey\Shader.h" />
     <ClInclude Include="grey\shaders.h" />
-    <ClInclude Include="grey\stb_image.h" />
     <ClInclude Include="grey\TexTurEoBjeCt.h.h" />
     <ClInclude Include="grey\texture_parametersssss.h" />
     <ClInclude Include="grey\T_1_M_3_R.h" />

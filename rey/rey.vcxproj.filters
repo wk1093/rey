@@ -24,7 +24,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="grey\glad.c">
+    <ClCompile Include="dependencies\glad.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -58,9 +58,6 @@
     </ClInclude>
     <ClInclude Include="grey\TexTurEoBjeCt.h.h">
       <Filter>Resource Files\grey</Filter>
-    </ClInclude>
-    <ClInclude Include="grey\stb_image.h">
-      <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="grey\T_1_M_3_R.h">
       <Filter>Resource Files\grey</Filter>
