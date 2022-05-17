@@ -44,6 +44,71 @@ public:
 		return textures.size() - 1;
 	}
 
+	void drawRoundedRect(float x, float y, float w1, float h1, float ro, Color color, float rot = 0)
+	{
+		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
+		float x1 = x;
+		float y1 = y;
+		y1 += h1;
+		y1 -= y1 * 2;
+		float pi = 3.1415926535897932384626433;
+		float rotation = rot * (pi / 180);
+		float a1 = sqrt(pow((w1 / 2), 2) + pow((h1 / 2), 2));
+		float r0 = asin(((h1 / 2) * (sin(pi / 2))) / (a1));
+		float r1 = r0 + rotation;
+		float r2 = -r0 + rotation;
+		float r3 = r1 - pi;
+		float r4 = r2 - pi;
+		float c1 = x1 + w1 / 2;
+		float c2 = y1 + h1 / 2;
+
+		float cor = cos(rotation);
+		float sir = sin(rotation);
+
+		auto trax = [cor, c1, c2, sir](float a, float b) -> float
+		{
+			return  cor * (a - c1) + (b - c2) * sir + c1;
+		};
+		auto tray = [cor, c1, c2, sir](float a, float b) -> float
+		{
+			return -sir * (a - c1) + cor * (b - c2) + c2;
+		};
+
+		auto trect = [&](float a, float b, float c, float d)
+		{
+			float passIn0[21] = { trax(a,b),tray(a,b),zmod,cR,cG,cB,cA, trax(a,d),tray(a,d),zmod,cR,cG,cB,cA, trax(c,d),tray(c,d),zmod,cR,cG,cB,cA };
+			float passIn1[7] = { trax(c,b),tray(c,b),zmod,cR,cG,cB,cA };
+			triangleFanVAO.addTriangle(passIn0); triangleFanVAO.addVertice(passIn1);
+			triangleFanVAO.endShape();
+		};
+
+		auto tcircle = [&](float xii, float yii, float ri)
+		{
+			float xi = trax(xii, yii);
+			float yi = tray(xii, yii);
+
+			float pi = 3.1415926535897932384626433f;
+			float pi2 = 2 * pi;
+			int amount = ri;
+			float passIn[7] = { xi, yi, zmod, cR, cG, cB, cA };
+			triangleFanVAO.addVertice(passIn);
+			for (int i = 0; i <= amount; i++) {
+				float passIn2[7] = { xi + (ri * cos(i * pi2 / amount)), yi + (ri * sin(i * pi2 / amount)), zmod, cR, cG, cB, cA };
+				triangleFanVAO.addVertice(passIn2);
+			}
+			triangleFanVAO.endShape();
+		};
+
+
+		trect(x1+ro,y1,x1+w1-ro,y1+h1);
+		trect(x1,y1+ro,x1+w1,y1+h1-ro);
+
+		tcircle(x1 +ro, y1 + ro, ro);
+		tcircle(x1 + w1 - ro, y1 + ro, ro);
+		tcircle(x1 + w1 - ro, y1 + h1 - ro, ro);
+		tcircle(x1 + ro, y1 + h1 - ro, ro);
+	}
+
 	void drawRect(float x1, float y1, float width, float height, Color color, float r=0) {
 		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
 		float x = x1;
@@ -116,9 +181,6 @@ public:
 		}
 		triangleFanVAO.endShape();
 		zmod -= 0.000001f;
-	}
-	void drawRoundedRect(float x1, float y1, float w1, float h1, float roundness, Color color, float rot = 0) {
-		
 	}
 	void drawRectGradient(float x, float y, float width, float height, Color topColor, Color bottomColor) {
 		float tR, tG, tB, tA; tR = float(bottomColor[0]) / 255; tG = float(bottomColor[1]) / 255; tB = float(bottomColor[2]) / 255; tA = float(bottomColor[3]) / 255;
