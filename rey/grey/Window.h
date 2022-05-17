@@ -31,6 +31,7 @@ private:
 	Key keys;
 	float prevX = 0.0f, prevY = 0.0f, prevWidth = 0.0f, prevHeight = 0.0f;
 public:
+	bool wireframe = false;
 	bool isOpen, debugInfo = false;
 	int width = WIDTH; int height = HEIGHT;
 	int x = 0; int y = 0;
@@ -184,6 +185,22 @@ public:
 		triangleFanVAO.endShape();
 		zmod -= 0.000001f;
 	}
+	void drawSector(float x, float y, float r, float degree, Color color, float rot=0, float accuracy=10) {
+		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
+		y = -y;
+		float pi = 3.1415926535897932384626433f;
+		float pi2 = 2 * pi;
+		float rotation = rot * (pi / 180);
+		int amount = accuracy*r;
+		float passIn[7] = { x, y, zmod, cR, cG, cB, cA };
+		triangleFanVAO.addVertice(passIn);
+		for (int i = 0; i <= amount*((degree)/360); i++) {
+			float passIn2[7] = { x + (r * cos(i * pi2 / amount+rotation)), y + (r * sin(i * pi2 / amount + rotation)), zmod, cR, cG, cB, cA };
+			triangleFanVAO.addVertice(passIn2);
+		}
+		triangleFanVAO.endShape();
+		zmod -= 0.000001f;
+	}
 	void drawRectGradient(float x, float y, float width, float height, Color topColor, Color bottomColor) {
 		float tR, tG, tB, tA; tR = float(bottomColor[0]) / 255; tG = float(bottomColor[1]) / 255; tB = float(bottomColor[2]) / 255; tA = float(bottomColor[3]) / 255;
 		float bR, bG, bB, bA; bR = float(topColor[0]) / 255; bG = float(topColor[1]) / 255; bB = float(topColor[2]) / 255; bA = float(topColor[3]) / 255;
@@ -272,6 +289,12 @@ public:
 		keys.UpdateKeys(windowHandle);
 	}
 	void render() {
+		if (wireframe) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+		else {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
 		glClearColor(float(backgroundColor[0]) / 255, float(backgroundColor[1]) / 255, float(backgroundColor[2]) / 255, float(backgroundColor[3]) / 255);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		triangleVAO.setUpVAO();
@@ -290,6 +313,7 @@ public:
 		
 		// Draw triangle fans
 		glBindVertexArray(triangleFanVAO.VAO);
+
 		triangleFanVAO.draw(GL_TRIANGLE_FAN);
 
 		if (textures.size() > 0) {

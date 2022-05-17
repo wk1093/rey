@@ -9,6 +9,12 @@
 #include "Window.h"
 #ifdef _WIN32
 #include <Windows.h>
+
+extern "C" {
+	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+	_declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+
 #endif
 
 // TODO
@@ -24,6 +30,7 @@ bool initGraphics(unsigned int sampleRate=4) {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 #ifdef _WIN32
+
 	typedef BOOL (WINAPI *PFNWGLSWAPINTERVALEXTPROC)(int interval);
 	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
