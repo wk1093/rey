@@ -107,6 +107,8 @@ public:
 		tcircle(x1 + w1 - ro, y1 + ro, ro);
 		tcircle(x1 + w1 - ro, y1 + h1 - ro, ro);
 		tcircle(x1 + ro, y1 + h1 - ro, ro);
+
+		zmod -= 0.000001f;
 	}
 
 	void drawRect(float x1, float y1, float width, float height, Color color, float r=0) {
