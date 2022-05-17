@@ -50,25 +50,29 @@ public:
 		float y = y1;
 		y += height;
 		y -= y * 2;
-
 		float pi = 3.1415926535897932384626433;
-
 		float rotation = r * (pi / 180);
-
 		float a1 = sqrt(pow((width / 2), 2) + pow((height / 2), 2));
-
 		float r0 = asin(((height / 2) * (sin(pi / 2))) / (a1));
 		float r1 = r0 + rotation;
 		float r2 = -r0 + rotation;
 		float r3 = r1 - pi;
 		float r4 = r2 - pi;
-
 		float c1 = x + width / 2;
 		float c2 = y + height / 2;
-
-
 		float passIn1[21] = { a1*cos(r1)+c1, a1*sin(r1)+c2, zmod, cR,cG,cB,cA,  a1 * cos(r2) + c1, a1 * sin(r2) + c2, zmod, cR,cG,cB,cA, a1 * cos(r3) + c1, a1 * sin(r3) + c2, zmod, cR,cG,cB,cA };
 		float passIn2[7] = { a1 * cos(r4) + c1, a1 * sin(r4) + c2, zmod, cR,cG,cB,cA };
+		triangleFanVAO.addTriangle(passIn1);
+		triangleFanVAO.addVertice(passIn2);
+		triangleFanVAO.endShape();
+		zmod -= 0.000001f;
+	}
+	void drawLine(float x1, float y1, float x2, float y2, float thickness, Color color) {
+		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
+		y1 -= y1 * 2;
+		y2 -= y2 * 2;
+		float passIn1[21] = { x1 - (thickness / 2), y1 - (thickness / 2), zmod, cR, cG, cB, cA, x1 - (thickness / 2), y1 + (thickness / 2), zmod, cR, cG, cB, cA, x2 + (thickness / 2), y2 + (thickness / 2), zmod, cR, cG, cB, cA };
+		float passIn2[7] = { x2 + (thickness / 2), y2 - (thickness / 2), zmod, cR, cG, cB, cA };
 		triangleFanVAO.addTriangle(passIn1);
 		triangleFanVAO.addVertice(passIn2);
 		triangleFanVAO.endShape();
@@ -81,22 +85,16 @@ public:
 		float y = y1;
 		y += height;
 		y -= y * 2;
-		float pi = 3.1415926535897932384626433;
-
+		float pi = 3.1415926535897932384626433f;
 		float rotation = r * (pi / 180);
-
 		float a1 = sqrt(pow((width / 2), 2) + pow((height / 2), 2));
-
 		float r0 = asin(((height / 2) * (sin(pi / 2))) / (a1));
 		float r1 = r0 + rotation;
 		float r2 = -r0 + rotation;
 		float r3 = r1 - pi;
 		float r4 = r2 - pi;
-
 		float c1 = x + width / 2;
 		float c2 = y + height / 2;
-
-
 		float passIn1[27] = { a1 * cos(r1) + c1, a1 * sin(r1) + c2, zmod, cR,cG,cB,cA, 0.0f, 1.0f, a1 * cos(r2) + c1, a1 * sin(r2) + c2, zmod, cR,cG,cB,cA, 0.0f, 0.0f, a1 * cos(r3) + c1, a1 * sin(r3) + c2, zmod, cR,cG,cB,cA, 1.0f, 0.0f };
 		float passIn2[9] = { a1 * cos(r4) + c1, a1 * sin(r4) + c2, zmod, cR,cG,cB,cA, 1.0f, 1.0f };
 		textures[texture].addTriangle(passIn1);
@@ -107,7 +105,7 @@ public:
 	void drawCircle(float x, float y, float r, Color color) {
 		float cR, cG, cB, cA; cR = float(color[0]) / 255; cG = float(color[1]) / 255; cB = float(color[2]) / 255; cA = float(color[3]) / 255;
 		y = -y;
-		float pi = 3.1415926535897932384626433;
+		float pi = 3.1415926535897932384626433f;
 		float pi2 = 2 * pi;
 		int amount = r;
 		float passIn[7] = { x, y, zmod, cR, cG, cB, cA };
@@ -119,13 +117,14 @@ public:
 		triangleFanVAO.endShape();
 		zmod -= 0.000001f;
 	}
+	void drawRoundedRect(float x1, float y1, float w1, float h1, float roundness, Color color, float rot = 0) {
+		
+	}
 	void drawRectGradient(float x, float y, float width, float height, Color topColor, Color bottomColor) {
 		float tR, tG, tB, tA; tR = float(bottomColor[0]) / 255; tG = float(bottomColor[1]) / 255; tB = float(bottomColor[2]) / 255; tA = float(bottomColor[3]) / 255;
 		float bR, bG, bB, bA; bR = float(topColor[0]) / 255; bG = float(topColor[1]) / 255; bB = float(topColor[2]) / 255; bA = float(topColor[3]) / 255;
 		y += height;
 		y -= y * 2;
-		//triangleVAO.addTriangle(new float[21]{ x, y, 0, tR,tG,tB,tA, x, y + height, 0, bR,bG,bB,bA, x + width, y + height, 0, bR,bG,bB,bA });
-		//triangleVAO.addTriangle(new float[21]{ x, y, 0, tR,tG,tB,tA, x + width, y, 0, tR,tG,tB,tA, x + width, y + height, 0, bR,bG,bB,bA });
 		float passIn1[21] = { x, y, zmod, tR,tG,tB,tA, x, y + height, zmod, bR,bG,bB,bA, x + width, y + height, zmod, bR,bG,bB,bA };
 		float passIn2[7] = { x + width, y, zmod, tR,tG,tB,tA };
 		triangleFanVAO.addTriangle(passIn1);
