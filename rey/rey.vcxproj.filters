@@ -19,6 +19,9 @@
     <Filter Include="Resource Files\prey">
       <UniqueIdentifier>{7356a626-1505-40f7-9339-f35ab9cf1f6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\arey">
+      <UniqueIdentifier>{2241ff22-00f2-426a-b5c8-25b6334ba731}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -67,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="grey\texture_parametersssss.h">
       <Filter>Resource Files\grey</Filter>
+    </ClInclude>
+    <ClInclude Include="arey\arey.h">
+      <Filter>Resource Files\arey</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

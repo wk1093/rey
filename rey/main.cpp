@@ -1,4 +1,5 @@
 #include "grey.h"
+#include "arey.h"
 
 int main() {
 	initGraphics();
@@ -19,6 +20,8 @@ int main() {
 			win.setFullscreen(!win.fullscreen);
 		if (win.isKeyPressed(KEY_ESCAPE))
 			win.isOpen = false;
+		if (win.isKeyPressed(KEY_L))
+			Audio.playSound("resources/aeh.ogg", false);
 
 		win.drawRect(50, 50, 100, 100, COLOR_SOFT_ORANGE);
 		win.drawCircle(250, 100, 50, COLOR_SOFT_ORANGE);
