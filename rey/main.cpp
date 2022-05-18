@@ -3,10 +3,10 @@
 int main() {
 	initGraphics();
 
-	Window win(800, 600, "Sectors");
+	Window win(800, 600, "grey");
 	win.setFlag(WINDOW_RESIZABLE, false);
 	win.open();
-	TextureID tex = win.newTexture("resources/block.png");
+	win.setBackgroundColor(COLOR_WHITE);
 
 	while (win.isOpen) {
 		win.update();
@@ -15,14 +15,16 @@ int main() {
 			win.wireframe = true;
 		else
 			win.wireframe = false;
-		win.drawRect(0, 0, 50, 50, COLOR_RED);
-		win.drawCircle(400, 300, 100, COLOR_YELLOW);
-		win.drawCircle(400, 300, 50, COLOR_BLUE);
-		
-		win.
+		if (win.isKeyPressed(KEY_F11))
+			win.setFullscreen(!win.fullscreen);
+		if (win.isKeyPressed(KEY_ESCAPE))
+			win.isOpen = false;
+
+		win.drawRect(50, 50, 100, 100, COLOR_SOFT_ORANGE);
+		win.drawCircle(250, 100, 50, COLOR_SOFT_ORANGE);
+		win.drawRoundedRect(350, 50, 100, 100, 25.0f, COLOR_SOFT_ORANGE);
 
 		win.render();
-
 	}
 
 	win.close();
