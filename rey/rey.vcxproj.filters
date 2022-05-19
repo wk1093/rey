@@ -74,5 +74,8 @@
     <ClInclude Include="arey\arey.h">
       <Filter>Resource Files\arey</Filter>
     </ClInclude>
+    <ClInclude Include="mrey\mrey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

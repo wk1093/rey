@@ -54,25 +54,16 @@ public:
 		y1 -= y1 * 2;
 		float pi = 3.1415926535897932384626433;
 		float rotation = rot * (pi / 180);
-		float a1 = sqrt(pow((w1 / 2), 2) + pow((h1 / 2), 2));
-		float r0 = asin(((h1 / 2) * (sin(pi / 2))) / (a1));
-		float r1 = r0 + rotation;
-		float r2 = -r0 + rotation;
-		float r3 = r1 - pi;
-		float r4 = r2 - pi;
 		float c1 = x1 + w1 / 2;
 		float c2 = y1 + h1 / 2;
 
-		float cor = cos(rotation);
-		float sir = sin(rotation);
-
-		auto trax = [cor, c1, c2, sir](float a, float b) -> float
+		auto trax = [c1, c2, rotation](float a, float b) -> float
 		{
-			return  cor * (a - c1) + (b - c2) * sir + c1;
+			return  rotateX(a, b, c1, c2, rotation);
 		};
-		auto tray = [cor, c1, c2, sir](float a, float b) -> float
+		auto tray = [c1, c2, rotation](float a, float b) -> float
 		{
-			return -sir * (a - c1) + cor * (b - c2) + c2;
+			return rotateY(a, b, c1, c2, rotation);
 		};
 
 		auto trect = [&](float a, float b, float c, float d)
@@ -129,7 +120,7 @@ public:
 		float c1 = x + width / 2;
 		float c2 = y + height / 2;
 		float passIn1[21] = { a1*cos(r1)+c1, a1*sin(r1)+c2, zmod, cR,cG,cB,cA,  a1 * cos(r2) + c1, a1 * sin(r2) + c2, zmod, cR,cG,cB,cA, a1 * cos(r3) + c1, a1 * sin(r3) + c2, zmod, cR,cG,cB,cA };
-		float passIn2[7] = { a1 * cos(r4) + c1, a1 * sin(r4) + c2, zmod, cR,cG,cB,cA };
+		float passIn2[7]  = { a1 * cos(r4) + c1, a1 * sin(r4) + c2, zmod, cR,cG,cB,cA };
 		triangleFanVAO.addTriangle(passIn1);
 		triangleFanVAO.addVertice(passIn2);
 		triangleFanVAO.endShape();
