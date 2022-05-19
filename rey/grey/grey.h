@@ -17,9 +17,6 @@ extern "C" {
 
 #endif
 
-// TODO
-// Optimize rotation in drawRect and drawTexture (if rot is 0 dont calculate it)
-
 bool initGraphics(unsigned int sampleRate=4) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -30,7 +27,6 @@ bool initGraphics(unsigned int sampleRate=4) {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 #ifdef _WIN32
-
 	typedef BOOL (WINAPI *PFNWGLSWAPINTERVALEXTPROC)(int interval);
 	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
