@@ -77,5 +77,8 @@
     <ClInclude Include="mrey\mrey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="drey\drey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
