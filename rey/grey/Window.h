@@ -4,6 +4,7 @@
 #include "shaders.h"
 #include "VAO.h"
 #include "c.a.m.e.r.a.h"
+#include "mrey.h"
 int WIDTH, HEIGHT;
 
 // Generally used functions

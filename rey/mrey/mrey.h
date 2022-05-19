@@ -17,5 +17,5 @@ double rotateY(float x, float y, float c1, float c2, float rot) {
 	float cor = cos(rotation);
 	float sir = sin(rotation);
 
-	return -sin(rotation) * (a - c1) + cor = cos(rotation) * (b - c2) + c2;
+	return -sin(rotation) * (x - c1) + cos(rotation) * (y - c2) + c2;
 }
