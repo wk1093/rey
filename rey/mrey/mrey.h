@@ -1,13 +1,17 @@
-void rotateX(float x, float y, float c1, float c2, float rot) {
+#include <math.h>
+
+double rotateX(float x, float y, float c1, float c2, float rot) {
+	float pi = 3.1415926535897932384626433;
 	float rotation = rot * (pi / 180);
 	
 	float cor = cos(rotation);
 	float sir = sin(rotation);
 
-	return  cos(rotation) * (x - c1) + (y - c2) * sin(rotation) + c1;
+	return cos(rotation) * (x - c1) + (y - c2) * sin(rotation) + c1;
 }
 
-void rotateY(float x, float y, float c1, float c2, float rot) {
+double rotateY(float x, float y, float c1, float c2, float rot) {
+	float pi = 3.1415926535897932384626433;
 	float rotation = rot * (pi / 180);
 
 	float cor = cos(rotation);
