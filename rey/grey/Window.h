@@ -31,6 +31,24 @@ private:
 	float zmod = 0.0f;
 	Key keys;
 	float prevX = 0.0f, prevY = 0.0f, prevWidth = 0.0f, prevHeight = 0.0f;
+	// Why do you make me do this manually glfw?
+	GLFWmonitor* getWindowMonitor() {
+		int count;
+		GLFWmonitor** monitors = glfwGetMonitors(&count);
+		std::vector<int> widths;
+		for (int i = 0; i < count; i++) {
+			if (i == 0) { widths.push_back(0); }
+			else {
+				const GLFWvidmode* modee = glfwGetVideoMode(monitors[i]);
+				widths.push_back(modee->width + widths[widths.size() - 1]);
+			}
+		}
+		for (int i = 0; i < widths.size(); i++) {
+			if (i + 2 > widths.size() || x > widths[i] && x < widths[i + 1]) {
+				return monitors[i];
+			}
+		}
+	}
 public:
 	bool wireframe = false;
 	bool isOpen, debugInfo = false;
@@ -355,25 +373,6 @@ public:
 	// Sets the title of the window
 	void setWindowTitle(std::string _title) { glfwSetWindowTitle(windowHandle, _title.c_str()); title = _title.c_str(); }
 
-	// Why do you make me do this manually glfw?
-	GLFWmonitor* getWindowMonitor() {
-		int count;
-		GLFWmonitor** monitors = glfwGetMonitors(&count);
-		std::vector<int> widths;
-		for (int i = 0; i < count; i++) {
-			if (i == 0) { widths.push_back(0); }
-			else {
-				const GLFWvidmode* modee = glfwGetVideoMode(monitors[i]);
-				widths.push_back(modee->width + widths[widths.size() - 1]);
-			}
-		}
-		for (int i = 0; i < widths.size(); i++) {
-			if (i + 2 > widths.size() || x > widths[i] && x < widths[i + 1]) {
-				return monitors[i];
-			}
-		}
-	}
-
 	void setFullscreen(bool _fullscreen)
 	{
 		if (fullscreen == _fullscreen) { return; }
@@ -383,16 +382,13 @@ public:
 			prevWidth = width;
 			prevHeight = height;
 			GLFWmonitor* currentMonitor = getWindowMonitor();
-			const GLFWvidmode* modee = glfwGetVideoMode(currentMonitor);
-			glfwSetWindowMonitor(windowHandle, currentMonitor, 0, 0, modee->width, modee->height, modee->refreshRate);
+			const GLFWvidmode* mode = glfwGetVideoMode(currentMonitor);
+			glfwSetWindowMonitor(windowHandle, currentMonitor, 0, 0, mode->width, mode->height, mode->refreshRate);
 			fullscreen = true;
 		}
 		else {
-			GLFWmonitor* currentMonitor = getWindowMonitor();
-			const GLFWvidmode* mode = glfwGetVideoMode(currentMonitor);
-			glfwSetWindowMonitor(windowHandle, NULL, 0, 0, mode->width, mode->height, mode->refreshRate);
-			setWindowDimensions(prevWidth, prevHeight);
-			setWindowPosition(prevX, prevY);
+			const GLFWvidmode* mode = glfwGetVideoMode(getWindowMonitor());
+			glfwSetWindowMonitor(windowHandle, NULL, prevX, prevY, prevWidth, prevHeight, mode->refreshRate);
 			fullscreen = false;
 		}
 	}

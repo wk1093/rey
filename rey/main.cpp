@@ -2,7 +2,7 @@
 #include <random>
 
 int main() {
-	initGraphics();
+	initGraphics(1);
 
 	Window win(1280, 720, "grey");
 	win.open();
@@ -56,7 +56,7 @@ int main() {
 			win.setFullscreen(!win.fullscreen);
 		if (win.isKeyPressed(KEY_ESCAPE))
 			win.isOpen = false;
-		if (win.isKeyDown(KEY_C)) {
+		if (win.isKeyPressed(KEY_C)) {
 			for (int i = 0; i < spawnAmountMin + (rand() % (spawnAmountMax-spawnAmountMin) + 1); i++) {
 				float min = 250 + (rand() % 750 + 1);
 				float max = min + rand() % 500 + 1;
