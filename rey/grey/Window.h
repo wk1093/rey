@@ -67,7 +67,7 @@ public:
 		currentShader = 0;
 	}
 
-	TextureID newTexture(std::string filePath, int filter = FILTER_LINEAR) { 
+	TextureID newTexture(std::string filePath, int filter = FILTER_LINEAR) {
 		for (int i = 0; i < shaders.size(); i++) {
 			shaders[i]->newTexture(filePath, filter);
 		}
@@ -156,7 +156,7 @@ public:
 		}
 		glClearColor(float(backgroundColor[0]) / 255, float(backgroundColor[1]) / 255, float(backgroundColor[2]) / 255, float(backgroundColor[3]) / 255);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
 		for (int i = 0; i < shaders.size(); i++) {
 			shaders[i]->draw(camera, width, height);
 		}

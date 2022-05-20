@@ -166,7 +166,7 @@ public:
 		textures[texture].addVertice(passIn2);
 		textures[texture].endShape();
 	}
-	
+
 	void draw(Camera camera, float WIDTH, float HEIGHT) {
 		triangleVAO.setUpVAO();
 		triangleFanVAO.setUpVAO();
