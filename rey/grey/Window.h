@@ -18,7 +18,7 @@ class Window
 {
 private:
 	GLFWwindow* windowHandle = 0;
-	CustomShader* primaryShader;
+	std::vector<CustomShader*> shaders;
 	Color backgroundColor = { 0, 0, 0, 255 };
 	bool shouldClearBackground = false;
 	float deltaTime = 0.0f; float lastFrame = 0.0f;
@@ -26,6 +26,7 @@ private:
 	float zmod = 0.0f;
 	Key keys;
 	float prevX = 0.0f, prevY = 0.0f, prevWidth = 0.0f, prevHeight = 0.0f;
+	unsigned int currentShader = 0;
 	// Why do you make me do this manually glfw?
 	GLFWmonitor* getWindowMonitor() {
 		int count;
@@ -54,14 +55,31 @@ public:
 	Camera camera;
 	bool fullscreen = false;
 
-	TextureID newTexture(std::string filePath, int filter = FILTER_LINEAR) { return primaryShader->newTexture(filePath, filter); }
-	void drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, Color color) { primaryShader->drawTriangle(x1, y1, x2, y2, x3, y3, color, zmod); }
-	void drawRect(float x1, float y1, float width, float height, Color color, float r = 0) { primaryShader->drawRect(x1, y1, width, height, color, zmod, r); }
-	void drawRoundedRect(float x, float y, float w1, float h1, float ro, Color color, float rot = 0) { primaryShader->drawRoundedRect(x, y, w1, h1, ro, color, zmod, rot); }
-	void drawLine(float x1, float y1, float x2, float y2, float thickness, Color color) { primaryShader->drawLine(x1, y1, x2, y2, thickness, color, zmod); }
-	void drawCircle(float x, float y, float r, Color color) { primaryShader->drawCircle(x, y, r, color, zmod); }
-	void drawSector(float x, float y, float r, float degree, Color color, float rot = 0, float accuracy = 10) { primaryShader->drawSector(x, y, r, degree, color, zmod, rot, accuracy); }
-	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color = COLOR_WHITE, float r = 0) { primaryShader->drawTexture(texture, x1, y1, width, height, zmod, color, r); }
+	ShaderID newShader(const char* colorVertexShader, const char* colorFragmentShader, const char* textureVertexShader, const char* textureFragmentShader) {
+		shaders.push_back(new CustomShader(colorVertexShader, colorFragmentShader, textureVertexShader, textureFragmentShader));
+		return shaders.size() - 1;
+	}
+
+	void useShader(ShaderID shader) {
+		currentShader = shader;
+	}
+	void useDefaultShader() {
+		currentShader = 0;
+	}
+
+	TextureID newTexture(std::string filePath, int filter = FILTER_LINEAR) { 
+		for (int i = 0; i < shaders.size(); i++) {
+			shaders[i]->newTexture(filePath, filter);
+		}
+		return shaders[currentShader]->textures.size() - 1;
+	}
+	void drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, Color color) { shaders[currentShader]->drawTriangle(x1, y1, x2, y2, x3, y3, color, zmod); zmod -= 0.000001f; }
+	void drawRect(float x1, float y1, float width, float height, Color color, float r = 0) { shaders[currentShader]->drawRect(x1, y1, width, height, color, zmod, r); zmod -= 0.000001f; }
+	void drawRoundedRect(float x, float y, float w1, float h1, float ro, Color color, float rot = 0) { shaders[currentShader]->drawRoundedRect(x, y, w1, h1, ro, color, zmod, rot); zmod -= 0.000001f; }
+	void drawLine(float x1, float y1, float x2, float y2, float thickness, Color color) { shaders[currentShader]->drawLine(x1, y1, x2, y2, thickness, color, zmod); zmod -= 0.000001f; }
+	void drawCircle(float x, float y, float r, Color color) { shaders[currentShader]->drawCircle(x, y, r, color, zmod); zmod -= 0.000001f; }
+	void drawSector(float x, float y, float r, float degree, Color color, float rot = 0, float accuracy = 10) { shaders[currentShader]->drawSector(x, y, r, degree, color, zmod, rot, accuracy); zmod -= 0.000001f; }
+	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color = COLOR_WHITE, float r = 0) { shaders[currentShader]->drawTexture(texture, x1, y1, width, height, zmod, color, r); zmod -= 0.000001f; }
 
 	void setFlag(uint32_t flag, bool state) {
 		glfwSetWindowAttrib(windowHandle, flag, state);
@@ -81,7 +99,7 @@ public:
 		glfwSetFramebufferSizeCallback(windowHandle, framebuffer_size_callback);
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) { std::cout << "Graphics init failure! (glad)\n"; }
 		isOpen = true;
-		primaryShader = new CustomShader(colorVertexShader.c_str(), colorFragmentShader.c_str(), textureVertexShader.c_str(), textureFragmentShader.c_str());
+		shaders.push_back(new CustomShader(colorVertexShader.c_str(), colorFragmentShader.c_str(), textureVertexShader.c_str(), textureFragmentShader.c_str()));
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_BLEND);
@@ -91,7 +109,9 @@ public:
 		isOpen = false;
 		glfwSetWindowShouldClose(windowHandle, true);
 		glfwDestroyWindow(windowHandle);
-		delete primaryShader; // This may not work fully and still leave memory behind! Too bad!
+		for (int i = 0; i < shaders.size(); i++) {
+			delete shaders[i];
+		}
 	}
 
 	bool isKeyPressed(int key) {
@@ -125,6 +145,7 @@ public:
 		glfwGetCursorPos(windowHandle, &mouseX, &mouseY);
 		glfwPollEvents();
 		keys.UpdateKeys(windowHandle);
+		if (deltaTime > 0.05f) { deltaTime = 0; }
 	}
 	void render() {
 		if (wireframe) {
@@ -136,11 +157,14 @@ public:
 		glClearColor(float(backgroundColor[0]) / 255, float(backgroundColor[1]) / 255, float(backgroundColor[2]) / 255, float(backgroundColor[3]) / 255);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		primaryShader->draw(camera, width, height);
+		for (int i = 0; i < shaders.size(); i++) {
+			shaders[i]->draw(camera, width, height);
+		}
 
 		glfwSwapBuffers(windowHandle);
 
 		zmod = 0.0f;
+		currentShader = 0;
 	}
 
 	// Returns the time since the last frame was drawn. Multiply frame-dependent variables by this value to make them frame independent.

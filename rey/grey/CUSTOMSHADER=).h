@@ -1,11 +1,13 @@
+typedef unsigned int ShaderID;
+
 class CustomShader {
 private:
 	VAO triangleVAO;
 	VAO triangleFanVAO;
-	std::vector<Texture> textures;
 	Shader* colorShader;
 	Shader* textureShader;
 public:
+	std::vector<Texture> textures;
 	TextureID newTexture(std::string filePath, int filter = FILTER_LINEAR) {
 		textures.push_back(Texture(filePath, filter));
 		return textures.size() - 1;
