@@ -55,13 +55,13 @@ public:
 	bool fullscreen = false;
 
 	TextureID newTexture(std::string filePath, int filter = FILTER_LINEAR) { return primaryShader->newTexture(filePath, filter); }
-	void drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, Color color) { primaryShader->drawTriangle(x1, y1, x2, y2, x3, y3, color, zmod); }
-	void drawRect(float x1, float y1, float width, float height, Color color, float r = 0) { primaryShader->drawRect(x1, y1, width, height, color, zmod, r); }
-	void drawRoundedRect(float x, float y, float w1, float h1, float ro, Color color, float rot = 0) { primaryShader->drawRoundedRect(x, y, w1, h1, ro, color, zmod, rot); }
-	void drawLine(float x1, float y1, float x2, float y2, float thickness, Color color) { primaryShader->drawLine(x1, y1, x2, y2, thickness, color, zmod); }
-	void drawCircle(float x, float y, float r, Color color) { primaryShader->drawCircle(x, y, r, color, zmod); }
-	void drawSector(float x, float y, float r, float degree, Color color, float rot = 0, float accuracy = 10) { primaryShader->drawSector(x, y, r, degree, color, zmod, rot, accuracy); }
-	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color = COLOR_WHITE, float r = 0) { primaryShader->drawTexture(texture, x1, y1, width, height, zmod, color, r); }
+	void drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, Color color) { primaryShader->drawTriangle(x1, y1, x2, y2, x3, y3, color, zmod); zmod -= 0.00001f; }
+	void drawRect(float x1, float y1, float width, float height, Color color, float r = 0) { primaryShader->drawRect(x1, y1, width, height, color, zmod, r); zmod -= 0.00001f;}
+	void drawRoundedRect(float x, float y, float w1, float h1, float ro, Color color, float rot = 0) { primaryShader->drawRoundedRect(x, y, w1, h1, ro, color, zmod, rot); zmod -= 0.00001f;}
+	void drawLine(float x1, float y1, float x2, float y2, float thickness, Color color) { primaryShader->drawLine(x1, y1, x2, y2, thickness, color, zmod); zmod -= 0.00001f;}
+	void drawCircle(float x, float y, float r, Color color) { primaryShader->drawCircle(x, y, r, color, zmod); zmod -= 0.00001f;}
+	void drawSector(float x, float y, float r, float degree, Color color, float rot = 0, float accuracy = 10) { primaryShader->drawSector(x, y, r, degree, color, zmod, rot, accuracy); zmod -= 0.00001f;}
+	void drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color = COLOR_WHITE, float r = 0) { primaryShader->drawTexture(texture, x1, y1, width, height, zmod, color, r); zmod -= 0.00001f;}
 
 	void setFlag(uint32_t flag, bool state) {
 		glfwSetWindowAttrib(windowHandle, flag, state);
