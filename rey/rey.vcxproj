@@ -144,6 +144,7 @@
     <ClInclude Include="drey\drey.h" />
     <ClInclude Include="grey\c.a.m.e.r.a.h" />
     <ClInclude Include="grey\color.h" />
+    <ClInclude Include="grey\CUSTOMSHADER=).h" />
     <ClInclude Include="grey\grey.h" />
     <ClInclude Include="grey\Key.h" />
     <ClInclude Include="grey\Shader.h" />

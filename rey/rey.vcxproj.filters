@@ -80,5 +80,8 @@
     <ClInclude Include="drey\drey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="grey\CUSTOMSHADER=).h">
+      <Filter>Resource Files\grey</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
