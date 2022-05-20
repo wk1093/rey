@@ -44,8 +44,6 @@ int main() {
 	while (win.isOpen) {
 		win.update();
 
-		win.drawRect(0, 0, win.width, win.height, COLOR_WHITE);
-
 		if (win.isKeyDown(KEY_SPACE))
 			win.wireframe = true;
 		else
