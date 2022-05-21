@@ -145,7 +145,7 @@ public:
 		glfwGetCursorPos(windowHandle, &mouseX, &mouseY);
 		glfwPollEvents();
 		keys.UpdateKeys(windowHandle);
-		if (deltaTime > 0.05f) { deltaTime = 0; }
+		if (deltaTime > 0.05f) { deltaTime = 0.05f; }
 	}
 	void render() {
 		if (wireframe) {

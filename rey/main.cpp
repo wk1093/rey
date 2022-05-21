@@ -124,6 +124,8 @@ int main() {
 			}
 		}
 
+		std::cout << "Confetti size: " << confetti.size() + rareConfetti.size() << std::endl;
+
 		win.render();
 	}
 
