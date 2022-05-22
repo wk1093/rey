@@ -44,3 +44,16 @@ win.isOpen is a boolean value that states whether or not the Window is open. Thi
 win.update should be called at the beginning of the main loop, and it updates general variables like deltaTime and does other things like polling events.
 ### win.render()
 win.render should be called at the end of the main loop. It'll take everything you've drawn up to this point and send it in a few batch calls.
+## Draw functions
+### win.drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, Color color)
+Draws the most primitive shape, a triangle. It takes 3 points and their x and y values and draws it with the according Color.
+### win.drawRect(float x1, float y1, float width, float height, Color color, float r = 0)
+Draws a rectangle with an x & y and a width & height. It also takes Color and r for rotation, which will rotate the rectangle around the middle.
+### win.drawRoundedRect(float x, float y, float w1, float h1, float ro, Color color, float rot = 0)
+Draws a rectangle with rounded edges. Take almost the same arguments as a rectangle, except for a float called "ro" that determines how rounded the rectangle is.
+### win.drawLine(float x1, float y1, float x2, float y2, float thickness, Color color)
+Draws a line that connects the two points passed in, with a thickness variable that controls the thickness of the line.
+### win.drawCircle(float x, float y, float r, Color color)
+Draws a circle with an x, y, a radius, and a color.
+### win.drawTexture(TextureID texture, float x1, float y1, float width, float height, Color color = COLOR_WHITE, float r = 0)
+Draws a texture with the passed in TextureID, x, y, width, height, and rotation. Color is automatically white, but if changed to anything else, will color the texture to that.
