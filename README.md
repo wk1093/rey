@@ -3,6 +3,32 @@ rey is a collection of modules developed to make aspects of game development as 
 
 # grey
 grey is an OpenGL based rendering engine focused on simplicity, speed, and control. It has a very simple syntax but is still powerful if you know how to use it.
+## Window boilerplate
+
+```
+#include "grey.h"
+
+int main() {
+	// Init
+	initGraphics();
+
+	// Create window
+	Window win(1280, 720, "grey");
+	win.open();
+
+	// Main loop
+	while (win.isOpen) {
+		win.update();
+
+		win.render();
+	}
+
+	// Deinit
+	win.close();
+	closeGraphics();
+}
+```
+
 ## General functions
 ### initGraphics() & closeGraphics()
 initGraphics should be called at the beginning before you do anything with the module. You can pass in a value that controls the amount of anti-aliasing that it should use, with 4 being the default amount if you don't pass in anything. closeGraphics should be called at the end of the program, as it frees up memory.
