@@ -49,9 +49,9 @@ The Window class can be used to create and manage a window, hosting an array of 
 ### win.open()
 win.open simply opens the Window.
 ### win.close()
-win.close simply closes the Window, and should be called at the end of the main loop.
+win.close simply closes the Window, and should be called at the end of the main loop. BE CAREFUL, calling this inside the main loop will crash it. If you need to close the window, set win.isOpen = false.
 ### win.isOpen
-win.isOpen is a boolean value that states whether or not the Window is open. This can be used to make a main loop that will run during the Window's existence by saying **while (win.isOpen)**.
+win.isOpen is a boolean value that states whether or not the Window is open. This can be used to make a main loop that will run during the Window's existence by saying **while (win.isOpen)**. You can close the window by setting this value to false.
 ### win.update()
 win.update should be called at the beginning of the main loop, and it updates general variables like deltaTime and does other things like polling events.
 ### win.render()
