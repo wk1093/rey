@@ -18,10 +18,20 @@ int main() {
 
 	// Main loop
 	while (win.isOpen) {
+		// Update
 		win.update();
-		
-		// Any draw functions would be called here!
 
+		// Input
+		if (win.isKeyPressed(KEY_F11)) {
+			win.setFullscreen(!win.fullscreen);
+		}
+		if (win.isKeyPressed(KEY_ESCAPE)) {
+			win.isOpen = false;
+		}
+
+		// Draw functions would be put here!
+
+		// Render
 		win.render();
 	}
 
