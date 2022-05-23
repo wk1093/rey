@@ -1,4 +1,5 @@
-typedef unsigned int ShaderID;
+typedef unsigned int CustomShaderID;
+typedef CustomShaderID ShaderID;
 
 struct CustomShaderVS {
 	std::string colorVertexShader;
@@ -19,6 +20,10 @@ public:
 		textures.push_back(Texture(filePath, filter));
 		return textures.size() - 1;
 	}
+	TextureID newTexture(Texture texture) {
+		textures.push_back(texture);
+		return textures.size() - 1;
+	}
 
 	CustomShader(const char* colorVertexShader, const char* colorFragmentShader, const char* textureVertexShader, const char* textureFragmentShader) {
 		colorShader = new Shader(colorVertexShader, colorFragmentShader);
@@ -27,7 +32,10 @@ public:
 		triangleFanVAO.initVAO();
 	}
 	CustomShader(CustomShaderVS customShaderVS) {
-		CustomShader(customShaderVS.colorVertexShader.c_str(), customShaderVS.colorFragmentShader.c_str(), customShaderVS.textureVertexShader.c_str(), customShaderVS.textureFragmentShader.c_str());
+		colorShader = new Shader(customShaderVS.colorVertexShader.c_str(), customShaderVS.colorFragmentShader.c_str());
+		textureShader = new Shader(customShaderVS.textureVertexShader.c_str(), customShaderVS.textureFragmentShader.c_str());
+		triangleVAO.initVAO();
+		triangleFanVAO.initVAO();
 	}
 	~CustomShader() {
 		delete colorShader;
