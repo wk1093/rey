@@ -1,5 +1,12 @@
 typedef unsigned int ShaderID;
 
+struct CustomShaderVS {
+	std::string colorVertexShader;
+	std::string colorFragmentShader;
+	std::string textureVertexShader;
+	std::string textureFragmentShader;
+};
+
 class CustomShader {
 private:
 	VAO triangleVAO;
@@ -18,6 +25,9 @@ public:
 		textureShader = new Shader(textureVertexShader, textureFragmentShader);
 		triangleVAO.initVAO();
 		triangleFanVAO.initVAO();
+	}
+	CustomShader(CustomShaderVS customShaderVS) {
+		CustomShader(customShaderVS.colorVertexShader.c_str(), customShaderVS.colorFragmentShader.c_str(), customShaderVS.textureVertexShader.c_str(), customShaderVS.textureFragmentShader.c_str());
 	}
 	~CustomShader() {
 		delete colorShader;
