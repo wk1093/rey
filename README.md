@@ -19,6 +19,8 @@ int main() {
 	// Main loop
 	while (win.isOpen) {
 		win.update();
+		
+		// Any draw functions would be called here!
 
 		win.render();
 	}
