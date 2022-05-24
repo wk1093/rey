@@ -1,8 +1,10 @@
 #include "grey.h"
 #include <random>
+#include "arey.h"
 
 int main() {
 	initGraphics(1);
+	initAudio();
 
 	Window win(1280, 720, "grey");
 	win.open();
@@ -40,7 +42,7 @@ int main() {
 	std::vector<Confetti> rareConfetti;
 
 	TextureID block = win.newTexture("resources/block.png");
-
+	playWav("resources/aeh.wav");
 	while (win.isOpen) {
 		win.update();
 
@@ -130,5 +132,6 @@ int main() {
 	}
 
 	win.close();
+	closeAudio();
 	closeGraphics();
 }
