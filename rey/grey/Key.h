@@ -137,6 +137,9 @@ public:
 	std::vector<int> Keys;
 	std::vector<int> TempKeys;
 
+	std::vector<int> Mouse;
+	std::vector<int> TempMouse;
+
 	void AddKey(int key) {
 		int found = -1;
 		for (int i = 0; i < Keys.size(); i++) {
@@ -179,6 +182,14 @@ public:
 				RemoveKey(i);
 			}
 		}
+		for (int i = 0; i < 8; i++) {
+			if (glfwGetMouseButton(window, i) == GLFW_PRESS) {
+				AddMouse(i);
+			}
+			else {
+				RemoveMouse(i);
+			}
+		}
 	}
 	bool FindKey(int key) {
 		for (int i = 0; i < Keys.size(); i++) {
@@ -191,6 +202,59 @@ public:
 	bool FindTempKey(int key) {
 		for (int i = 0; i < TempKeys.size(); i++) {
 			if (TempKeys[i] == key) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+	void AddMouse(int button) {
+		int found = -1;
+		for (int i = 0; i < Mouse.size(); i++) {
+			if (Mouse[i] == button) {
+				found = i;
+			}
+		}
+		if (found != -1) {
+			for (int i = 0; i < TempMouse.size(); i++) {
+				if (Mouse[found] == TempMouse[i]) {
+					TempMouse.erase(TempMouse.begin() + i);
+					return;
+				}
+			}
+		}
+		else {
+			Mouse.push_back(button);
+			TempMouse.push_back(button);
+		}
+	}
+	void RemoveMouse(int button) {
+		for (int i = 0; i < Mouse.size(); i++) {
+			if (Mouse[i] == button) {
+				Mouse.erase(Mouse.begin() + i);
+				for (int z = 0; z < TempMouse.size(); z++) {
+					if (TempMouse[z] == button) {
+						TempMouse.erase(TempMouse.begin() + z);
+						return;
+					}
+				}
+				return;
+			}
+		}
+	}
+	bool FindMouse(int button) {
+		for (int i = 0; i < Mouse.size(); i++) {
+			if (Mouse[i] == button) {
+				return true;
+			}
+		}
+		return false;
+	}
+	bool FindTempMouse(int button) {
+		for (int i = 0; i < TempMouse.size(); i++) {
+			if (TempMouse[i] == button) {
 				return true;
 			}
 		}

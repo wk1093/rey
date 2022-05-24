@@ -122,8 +122,11 @@ public:
 		return keys.FindKey(key);
 	}
 
+	bool isMouseDown(int button) {
+		return keys.FindMouse(button);
+	}
 	bool isMousePressed(int button) {
-		return (glfwGetMouseButton(windowHandle, button) == GLFW_PRESS);
+		return keys.FindTempMouse(button);
 	}
 
 	void clearScreen(Color color) {

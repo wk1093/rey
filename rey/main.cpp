@@ -1,10 +1,8 @@
 #include "grey.h"
 #include <random>
-#include "arey.h"
 
 int main() {
 	initGraphics(1);
-	initAudio();
 
 	Window win(1280, 720, "grey");
 	win.open();
@@ -42,7 +40,6 @@ int main() {
 	std::vector<Confetti> rareConfetti;
 
 	TextureID block = win.newTexture("resources/block.png");
-	playWav("resources/aeh.wav");
 	while (win.isOpen) {
 		win.update();
 
@@ -60,7 +57,7 @@ int main() {
 			win.setFullscreen(!win.fullscreen);
 		if (win.isKeyPressed(KEY_ESCAPE))
 			win.isOpen = false;
-		if (win.isKeyPressed(KEY_C)) {
+		if (win.isKeyPressed(KEY_C) || win.isMousePressed(MOUSE_LEFT)) {
 			for (int i = 0; i < spawnAmountMin + (rand() % (spawnAmountMax - spawnAmountMin) + 1); i++) {
 				float min = 250 + (rand() % 750 + 1);
 				float max = min + rand() % 500 + 1;
@@ -132,6 +129,5 @@ int main() {
 	}
 
 	win.close();
-	closeAudio();
 	closeGraphics();
 }
