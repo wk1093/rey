@@ -68,8 +68,9 @@ public:
 	}
 
 	TextureID newTexture(std::string filePath, int filter = FILTER_LINEAR) {
+		Texture texture(filePath, filter);
 		for (int i = 0; i < shaders.size(); i++) {
-			shaders[i]->newTexture(filePath, filter);
+			shaders[i]->newTexture(texture);
 		}
 		return shaders[currentShader]->textures.size() - 1;
 	}

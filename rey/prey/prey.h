@@ -1,5 +1,10 @@
 #include <iostream>
 
+bool AABB(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {
+	if (x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2) { return true; }
+	return false;
+}
+
 void initPhysics() {
 
 }
@@ -16,6 +21,10 @@ public:
 	float velocityX = 0.0f, velocityY = 0.0f;
 	PhysicsRect(std::string _type, float _x, float _y, float _width, float _height, float _density, float _rotation)
 		: type(_type), x(_x), y(_y), width(_width), height(_height), density(_density), rotation(_rotation) { }
+	bool isCollidingWith(PhysicsRect rect) {
+		if (AABB(x, y, width, height, rect.x, rect.y, rect.width, rect.height)) { return true; }
+		return false;
+	}
 };
 
 class PhysicsWorld {
