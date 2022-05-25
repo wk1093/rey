@@ -26,6 +26,10 @@ public:
 		if (AABB(x, y, width, height, rect.x, rect.y, rect.width, rect.height)) { return true; }
 		return false;
 	}
+	void applyForce(float forceX, float forceY) {
+		velocityX += forceX;
+		velocityY += forceY;
+	}
 };
 
 class PhysicsWorld {
@@ -42,6 +46,8 @@ public:
 	}
 	void update(float deltaTime) {
 		for (int i = 0; i < rects.size(); i++) {
+			rects[i].velocityX += (gravityX * deltaTime) * rects[i].density;
+			rects[i].x += rects[i].velocityX;
 			rects[i].velocityY += (gravityY * deltaTime) * rects[i].density;
 			rects[i].y += rects[i].velocityY;
 		}
