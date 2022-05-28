@@ -1,4 +1,7 @@
 # rey
+
+### WORK ON THIS VERSION OF REY IS NO LONGER IN PROGRESS [UPDATED VERSION HERE](https://github.com/spookysword/rey)
+
 rey is a collection of modules developed to make aspects of game development as easy as possible while still being as customizable as you want it to be. As of now, no module is 100% finished, but we're working on it as much as possible.
 
 # grey
